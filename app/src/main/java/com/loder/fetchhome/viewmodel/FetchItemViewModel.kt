@@ -27,13 +27,9 @@ class FetchItemViewModel
 
             if (response.isSuccessful) {
                 val lista = response.body()!!
+                val filterList = lista.filter { it.name != null && !it.name.equals("") }
 
-                for (i in lista.indices) {
-                    if (!(lista[i].name == null) && !(lista[i].name.equals(""))) {
-                        listFiltered.add(lista[i])
-                    }
-                }
-                itemLiveData.postValue(listFiltered)
+                itemLiveData.postValue(filterList)
             } else {
                 Log.e(TAG, "Error fetching: ${response.message()}")
             }

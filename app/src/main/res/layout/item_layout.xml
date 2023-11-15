@@ -40,8 +40,6 @@
             android:tintMode="src_in"
             />
 
-
-
         </com.google.android.material.card.MaterialCardView>
 
     <TextView
@@ -68,6 +66,7 @@
         android:textColor="@android:color/darker_gray"
         app:layout_constraintLeft_toRightOf="@+id/card_image"
         app:layout_constraintTop_toBottomOf="@+id/text_name" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
