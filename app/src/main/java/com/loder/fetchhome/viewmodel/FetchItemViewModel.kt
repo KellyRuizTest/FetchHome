@@ -22,11 +22,18 @@ class FetchItemViewModel
     private val itemLiveData = MutableLiveData<List<ItemModel>>()
 
     fun getFetchItems() = viewModelScope.launch {
+        val listFiltered = mutableListOf<ItemModel>()
         repository.getFetchItem().let { response ->
 
             if (response.isSuccessful) {
-                val sucessfuly = response.body()!!
-                itemLiveData.value = sucessfuly
+                val lista = response.body()!!
+
+                for (i in lista.indices) {
+                    if (!(lista[i].name == null) && !(lista[i].name.equals(""))) {
+                        listFiltered.add(lista[i])
+                    }
+                }
+                itemLiveData.postValue(listFiltered)
             } else {
                 Log.e(TAG, "Error fetching: ${response.message()}")
             }

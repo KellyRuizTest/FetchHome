@@ -35,12 +35,12 @@ class MainActivity : AppCompatActivity() {
         getListItems()
     }
 
-    private fun getListItems(){
+    private fun getListItems() {
         itemRecycler = binding.rvItems
         itemRecycler.layoutManager = LinearLayoutManager(this)
         itemRecycler.setHasFixedSize(true)
 
-        viewModel.observeFetchItem().observe(this){
+        viewModel.observeFetchItem().observe(this) {
             itemAdapter = ItemAdapter(it)
             itemRecycler.adapter = itemAdapter
         }

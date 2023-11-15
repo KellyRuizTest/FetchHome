@@ -14,13 +14,8 @@ class ItemAdapter(private val itemList: List<ItemModel>) : RecyclerView.Adapter<
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val itemName = itemList.get(position).name
-        if (itemName != null) {
-            if (!itemName.equals("") || !itemName.equals("null")) {
-                holder.binding.textName.text = itemList.get(position).name
-                holder.binding.textId.text = itemList.get(position).id.toString()
-            }
-        }
+        holder.binding.textName.text = itemList.get(position).name
+        holder.binding.textId.text = itemList.get(position).id.toString()
     }
 
     override fun getItemCount(): Int {
