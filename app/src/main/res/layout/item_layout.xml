@@ -67,6 +67,20 @@
         app:layout_constraintLeft_toRightOf="@+id/card_image"
         app:layout_constraintTop_toBottomOf="@+id/text_name" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/item_listId"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/cardview_shadow_end_color"
+            android:hint="10"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@color/material_dynamic_tertiary90"
+            app:strokeColor="#FACA16"
+            app:strokeWidth="0.4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
