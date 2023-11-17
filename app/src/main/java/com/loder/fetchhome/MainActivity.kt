@@ -2,11 +2,14 @@ package com.loder.fetchhome
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.ChipGroup
 import com.loder.fetchhome.adapter.ItemAdapter
 import com.loder.fetchhome.databinding.ActivityMainBinding
+import com.loder.fetchhome.databinding.ChoiceChipBinding
 import com.loder.fetchhome.viewmodel.FetchItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,17 +35,52 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(FetchItemViewModel::class.java)
         viewModel.getFetchItems()
 
-        getListItems()
-    }
-
-    private fun getListItems() {
         itemRecycler = binding.rvItems
         itemRecycler.layoutManager = LinearLayoutManager(this)
         itemRecycler.setHasFixedSize(true)
 
+        getListItems()
+        getChipCat()
+    }
+
+    private fun getListItems() {
         viewModel.observeFetchItem().observe(this) {
             itemAdapter = ItemAdapter(it)
             itemRecycler.adapter = itemAdapter
         }
+    }
+
+    private fun getChipCat() {
+        viewModel.observeCatCount().observe(this) {
+            createChips(it)
+        }
+    }
+
+    private fun createChips(num: Int) {
+        for (i in 1..num) {
+            val chip = ChoiceChipBinding.inflate(layoutInflater).root
+            var textName = "Items" + i.toString()
+            chip.text = textName
+            chip.tag = i
+            binding.chipGroup.addView(chip)
+        }
+
+        binding.chipGroup.setOnCheckedChangeListener(
+            ChipGroup.OnCheckedChangeListener { chipGroup, i ->
+
+                if (i in 1..num) {
+                    getListById(i)
+                } else {
+                    getListItems()
+                }
+            },
+        )
+    }
+
+    private fun getListById(tag: Int) {
+        val filtered = viewModel.categorizingItem(tag)
+        itemAdapter = ItemAdapter(filtered)
+        itemRecycler.adapter = itemAdapter
+        itemAdapter.notifyDataSetChanged()
     }
 }

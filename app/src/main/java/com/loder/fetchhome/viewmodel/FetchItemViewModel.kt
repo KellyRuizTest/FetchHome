@@ -20,6 +20,7 @@ class FetchItemViewModel
 ) : ViewModel() {
 
     private val itemLiveData = MutableLiveData<List<ItemModel>>()
+    private val categoriesCount = MutableLiveData<Int>()
 
     fun getFetchItems() = viewModelScope.launch {
         val listFiltered = mutableListOf<ItemModel>()
@@ -32,6 +33,8 @@ class FetchItemViewModel
                 // sorting by listId and name (because name is built by "Item id") -> it means sorting by Id
                 val bylistId = filterList.sortedWith(compareBy({ it.listId }, { it.id }))
                 // post result value List in LiveData
+                val cat = lista.groupBy { it.listId }.size
+                categoriesCount.postValue(cat)
                 itemLiveData.postValue(bylistId)
             } else {
                 Log.e(TAG, "Error fetching: ${response.message()}")
@@ -41,5 +44,14 @@ class FetchItemViewModel
 
     fun observeFetchItem(): LiveData<List<ItemModel>> {
         return itemLiveData
+    }
+
+    fun observeCatCount(): LiveData<Int> {
+        return categoriesCount
+    }
+
+    fun categorizingItem(id: Int): List<ItemModel> {
+        val itemListCat = itemLiveData.value?.filter { it.listId == id }
+        return itemListCat!!
     }
 }
